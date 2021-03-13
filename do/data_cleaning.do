@@ -8,16 +8,16 @@ des
 *BEGIN DATA CLEANING
 
 **ORDER VARS LIKE PREVIOUS ANALYSIS STRUCTURE (PER COUNTRY,EXCEL DATA)
-order bg_gsr_nfsv_gd_zs - sp_pop_65up_to_zs
+order bg_gsr_nfsv_gd_zs - si_spr_pcap_zg
 
 order CC Year, first
 
-foreach oldvar of varlist bg_gsr_nfsv_gd_zs - sp_pop_65up_to_zs {
+foreach oldvar of varlist bg_gsr_nfsv_gd_zs - si_spr_pcap_zg {
 	notes `oldvar' : `oldvar'
 }
 
 *Batch rename
-rename (bg_gsr_nfsv_gd_zs - sp_pop_65up_to_zs) v#, addnumber
+rename (bg_gsr_nfsv_gd_zs -  si_spr_pcap_zg) v#, addnumber
 
 format Year %ty
 

@@ -69,6 +69,42 @@ save "${apidata}/WBAPI_T20_premerge.dta", replace
 
 clear
 
+**GET DATA FOR TOPIC 14: Science and Technology
+wbopendata, language(en - English) country() topics(14 - Science and Technology) indicator() long 
+
+drop countryname region regionname adminregion adminregionname incomelevel incomelevelname lendingtype lendingtypename
+ren year Year
+ren countrycode CC
+keep if CC=="JPN" | CC=="CHL" | CC=="TUR"
+
+save "${apidata}/WBAPI_T14_premerge.dta", replace
+
+clear
+
+**GET DATA FOR TOPIC 11: Poverty
+wbopendata, language(en - English) country() topics(11 - Poverty) indicator() long 
+
+drop countryname region regionname adminregion adminregionname incomelevel incomelevelname lendingtype lendingtypename
+ren year Year
+ren countrycode CC
+keep if CC=="JPN" | CC=="CHL" | CC=="TUR"
+
+save "${apidata}/WBAPI_T11_premerge.dta", replace
+
+clear
+
+**GET DATA FOR TOPIC 12: Private Sector
+wbopendata, language(en - English) country() topics(12 - Private Sector) indicator() long 
+
+drop countryname region regionname adminregion adminregionname incomelevel incomelevelname lendingtype lendingtypename
+ren year Year
+ren countrycode CC
+keep if CC=="JPN" | CC=="CHL" | CC=="TUR"
+
+save "${apidata}/WBAPI_T12_premerge.dta", replace
+
+clear
+
 **GET DATA FOR POPULATION LEVEL/GROWTH
 wbopendata, language(en - English) indicators( ///
 SP.POP.GROW; SP.POP.TOTL; SP.POP.DPND; SP.POP.DPND.OL; SP.POP.DPND.YG; ///

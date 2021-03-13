@@ -59,7 +59,7 @@ foreach v in  v194t v195t v196t v197t v199t v209t v210t v214t v215t v218t {
 
 
 	
-*****GENERATE RECESSION INDICATOR VARIABLE
+*****GENERATE VARIABLES
 gen double rec_ind_t = v199t if v198 < 0
 replace rec_ind_t = 0 if rec_ind==.
 la var rec_ind_t "Recession Indicator: Annual GDP Growth is Negative"
@@ -67,6 +67,17 @@ format rec_ind_t %20.4gc
 order rec_ind_t, after(Year)
 
 order v194m - v218tlog, after(rec_ind_t)
+
+gen v73total = v732+v733
+la var v73total "Patent applications, total"
+order v73total, after(v733)
+
+gen v482alt = (v482/v195)*100
+la var v482alt "Interest payments as a percentage of GDP"
+order v482alt, after(v482)
+
+gen v482t = (v482/1e12)
+la var v482t "Interest payments in Trillions of CLP"
 
 *****GENERATE VARIABLE WITH VALUE LABEL TO USE AS PATH PREFIX
 gen int fr_id =1 if CC=="JPN"
