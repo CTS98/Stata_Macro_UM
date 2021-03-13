@@ -66,6 +66,8 @@ la var rec_ind_t "Recession Indicator: Annual GDP Growth is Negative"
 format rec_ind_t %20.4gc
 order rec_ind_t, after(Year)
 
+order v194m - v218tlog, after(rec_ind_t)
+
 *****GENERATE VARIABLE WITH VALUE LABEL TO USE AS PATH PREFIX
 gen int fr_id =1 if CC=="JPN"
 recode fr_id (.=2) if CC=="CHL"
