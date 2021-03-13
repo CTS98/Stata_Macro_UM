@@ -12,52 +12,82 @@ set checksum off
 **GET DATA FOR TOPIC 3: ECONOMY
 wbopendata, language(en - English) country() topics(3 - Economy & Growth) indicator() long
 
-save "${apidata}/WBAPI_T3_raw.dta", replace
+drop countryname region regionname adminregion adminregionname incomelevel incomelevelname lendingtype lendingtypename
+ren year Year
+ren countrycode CC
+
+keep if CC=="JPN" | CC=="CHL" | CC=="TUR"
+
+save "${apidata}/WBAPI_T3_premerge.dta", replace
 
 **GET DATA FOR TOPIC 7: FINANCIAL SECTOR
 clear
 wbopendata, language(en - English) country() topics(7 - Financial Sector) indicator() long
 
-save "${apidata}/WBAPI_T7_raw.dta", replace
+drop countryname region regionname adminregion adminregionname incomelevel incomelevelname lendingtype lendingtypename
+ren year Year
+ren countrycode CC
+
+keep if CC=="JPN" | CC=="CHL" | CC=="TUR"
+
+save "${apidata}/WBAPI_T7_premerge.dta", replace
 
 **GET DATA FOR TOPIC 10: SOCIAL PROTECTION & LABOR
 clear
 wbopendata, language(en - English) country() topics( 10 - Social Protection & Labor) indicator() long
 
-save "${apidata}/WBAPI_T10_raw.dta", replace
+drop countryname region regionname adminregion adminregionname incomelevel incomelevelname lendingtype lendingtypename
+ren year Year
+ren countrycode CC
+
+keep if CC=="JPN" | CC=="CHL" | CC=="TUR"
+
+save "${apidata}/WBAPI_T10_premerge.dta", replace
 clear
 
-**********************************
-****PREPARE DATASETS FOR MARGING
-**********************************
-**T3
-use "${apidata}/WBAPI_T3_raw", clear
-**DROP SUPERFLUOUS METADATA
+**GET DATA FOR TOPIC 13: PUBLIC SECTOR
+wbopendata, language(en - English) country() topics(13 - Public Sector) indicator() long 
+
 drop countryname region regionname adminregion adminregionname incomelevel incomelevelname lendingtype lendingtypename
+ren year Year
+ren countrycode CC
 
-**DROP OBS FOR ALL COUNTRIES EXCEPT JPN, CHL, TUR
-keep if countrycode=="JPN" | countrycode=="CHL" | countrycode=="TUR"
-**save for appending
-save "${apidata}/WBAPI_T3_premerge.dta", replace
+keep if CC=="JPN" | CC=="CHL" | CC=="TUR"
 
-**T7
-use "${apidata}/WBAPI_T7_raw", clear
+save "${apidata}/WBAPI_T13_premerge.dta", replace
+clear
 
-**DROP SUPERFLUOUS METADATA
+**GET DATA FOR TOPIC 20: EXTERNAL DEBT
+wbopendata, language(en - English) country() topics(20 - External Debt) indicator() long 
+
 drop countryname region regionname adminregion adminregionname incomelevel incomelevelname lendingtype lendingtypename
+ren year Year
+ren countrycode CC
+keep if CC=="JPN" | CC=="CHL" | CC=="TUR"
 
-**DROP OBS FOR ALL COUNTRIES EXCEPT JPN, CHL, TUR
-keep if countrycode=="JPN" | countrycode=="CHL" | countrycode=="TUR"
-**save for appending
-save "${apidata}/WBAPI_T7_premerge.dta", replace
+save "${apidata}/WBAPI_T20_premerge.dta", replace
 
-**T10
-use "${apidata}/WBAPI_T10_raw", clear
+clear
 
-**DROP SUPERFLUOUS METADATA
+**GET DATA FOR POPULATION LEVEL/GROWTH
+wbopendata, language(en - English) indicators( ///
+SP.POP.GROW; SP.POP.TOTL; SP.POP.DPND; SP.POP.DPND.OL; SP.POP.DPND.YG; ///
+SP.POP.TOTL.FE.ZS; SP.RUR.TOTL.ZG; SP.URB.GROW; SP.URB.TOTL.IN.ZS; SP.POP.65UP.TO.ZS)long projection nometadata clear
+
+la var sp_pop_grow "Population Growth, annual %" 
+la var sp_pop_totl "Population, total"
+la var sp_pop_dpnd "Age Dependency Ratio (% of working-age population)"
+la var sp_pop_dpnd_ol "Age Dependency Ratio, old (% of working-age population)"
+la var sp_pop_dpnd_yg "Age Dependency Ratio, young (% of working-age population)"
+la var sp_pop_totl_fe_zs "Population, female (%of total population)"
+la var sp_rur_totl_zg "Rural population growth (annual %)"
+la var sp_urb_grow "Urban population growth, annual %"
+la var sp_urb_totl_in_zs "Urban population (% of total population)"
+la var sp_pop_65up_to_zs "Population ages 65+ (% of total population)"
+
 drop countryname region regionname adminregion adminregionname incomelevel incomelevelname lendingtype lendingtypename
+ren year Year
+ren countrycode CC
+keep if CC=="JPN" | CC=="CHL" | CC=="TUR"
 
-**DROP OBS FOR ALL COUNTRIES EXCEPT JPN, CHL, TUR
-keep if countrycode=="JPN" | countrycode=="CHL" | countrycode=="TUR"
-**save for appending
-save "${apidata}/WBAPI_T10_premerge.dta", replace
+save "${apidata}/WBAPI_POP_premerge.dta"

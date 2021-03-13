@@ -6,7 +6,7 @@ cd "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/"
 
 include "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/do/paths.do"
 *LOAD DATA
-use "${apidata}/WBAPI_updated_cleaned_renamed.dta", clear
+use "${apidata}/WBAPI_cleaned_renamed.dta", clear
 
 preserve
 
