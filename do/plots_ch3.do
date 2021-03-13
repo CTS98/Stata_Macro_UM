@@ -29,6 +29,44 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 
 	cd "${output}/`: var label fr_id '/ch3/"
 		
+	**POPULATION
+	qui levelsof RecYear, local(RY)
+	qui sum Year, detail
+	local grtitle = "Population Growth"
+	tw tsline v567 v573 v574, ///
+	lcolor(`: var label color_2')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	title(`grtitle', color(black) span) ///
+	name(popgrowth, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(rows(3)) ///
+	xline(`RY' , lcolor(gs10%85)) nodraw
+	
+	
+	qui levelsof RecYear, local(RY)
+	qui sum Year, detail
+	local grtitle = "Population Composition"
+	tw tsline v576 v572 v570, ///
+	lcolor(`: var label color_2') lpattern(solid dash) ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	title(`grtitle', color(black) span) ///
+	name(popcomp, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(rows(3)) ///
+	xline(`RY' , lcolor(gs9%85))  nodraw
+	
+	gr combine popgrowth popcomp, ///
+	rows(2) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
+	caption(, nobox) note($datasource, nobox) name(labor_infl, replace) ///
+	xsize(7) scale(0.8) ///
+	graphregion(margin(zero) fcolor(white) ///
+	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
+	ilpattern(blank)) xcommon note("vertical lines mark recession years" "${datasource}")
+	
+	gr export "Population Growth and Composition.png", replace
+
 
 	
  

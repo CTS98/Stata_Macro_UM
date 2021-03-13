@@ -18,4 +18,4 @@ global apidata "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/data/api_data"
 global datasource "Data Retrieved 27/02/21 from World Bank DataBank"
 
 ***SET GRAPH SCHEME
-global grs "color(white) color (black) plotregion(fcolor(white)) graphregion(fcolor(white)) bgcolor(white)"
+global grs "color(white) color(black) plotregion(fcolor(white)) graphregion(fcolor(white)) bgcolor(white)"
