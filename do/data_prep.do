@@ -73,11 +73,35 @@ la var v73total "Patent applications, total"
 order v73total, after(v733)
 
 gen v482alt = (v482/v195)*100
-la var v482alt "Interest payments as a percentage of GDP"
+la var v482alt "Interest payments as % of GDP"
 order v482alt, after(v482)
 
 gen v482t = (v482/1e12)
-la var v482t "Interest payments in Trillions of CLP"
+la var v482t "Interest payments in Trillions of LCU"
+
+gen totalrev = (v457+473)/1e12
+la var totalrev "Nominal total revenue in Trillions of LCU"
+order totalrev, after(v457)
+
+gen totalexpense = v487/1e12
+la var totalexpense "Nominal total expense in Trillions of LCU"
+order totalexpense, after(totalrev)
+
+gen totalrevreal = (totalrev/v187)*100
+la var totalrevreal "Total revenue in constant $T LCU"
+order totalrevreal, after(v199t)
+
+gen expensereal = (totalexpense/v187)*100
+la var expensereal "Expense in constant $T LCU"
+order expensereal, after(totalrevreal)
+
+gen budgetdef = totalrev-totalexpense
+la var budgetdef "Budget surplus, Trillions of current LCU"
+order budgetdef, after(totalrevreal)
+
+gen budgetdefreal = totalrevreal-expensereal
+la var budgetdefreal "Budget Surplus, constant $T LCU"
+order budgetdefreal, after(budgetdef)
 
 *****GENERATE VARIABLE WITH VALUE LABEL TO USE AS PATH PREFIX
 gen int fr_id =1 if CC=="JPN"
@@ -180,7 +204,7 @@ la var color_s_line "orange"
 
 drop if Year<1979 | Year>2011
 ***REPLACE "LCU" by "CLP"
-labvarch v* , subst("LCU" "CLP") 
+labvarch _all , subst("LCU" "CLP") 
 tsset Year
 *****gen var for percentage change in unnemployment
 labvarch v416 , to(")")

@@ -46,18 +46,49 @@ frame change CHILE
 	graphregion(margin(tiny)) ///
 	legend(rows(5))  
 	
+	
+	
 **GOV INTEREST PAYMENTS
+	qui levelsof RecYear, local(RY)
 	qui sum Year, detail
-	local grtitle = "Interest Payments"
-	tw tsline v482t v195t, ///
-	lcolor(`: var label color_2')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	local grtitle = "Government Interest Payments"
+	tw tsline v482alt v278 v277, ///
+	lcolor(`: var label color_5')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	yline(0, lcolor(gs10%85)) ///
-	name(interest, replace) ///
+	name(govinterest, replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
 	graphregion(margin(tiny)) ///
-	legend(rows(2))  
+	legend(cols(2)  span)  ///
+	xline(`RY' , lcolor(gs9%85)) nodraw
+
+	
+**Revenue, Expense, Deficit
+	qui levelsof RecYear, local(RY)
+	qui sum Year, detail
+	local grtitle = "Revenue, Expense, and the Budget"
+	tw tsline totalrevreal  expensereal budgetdefreal, ///
+	lcolor(`: var label color_5')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
+	title("`grtitle'", color(black) span) ///
+	yline(0, lcolor(gs10%85)) ///
+	name(budgetdef, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(cols(2) span)  ///
+	xline(`RY' , lcolor(gs9%85))  ///
+	note("values calculated from WDI series gc_rev_gotr_cn, gc_tax_totl_cn, gc_xpn_totl_cn, ny_gdp_defl_zs") nodraw
+
+	
+	gr combine budgetdef govinterest, ///
+	rows(2) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
+	caption(, nobox) note($datasource, nobox) name(govdebtdyn, replace) ///
+	xsize(7) ysize(7) scale(0.8) ///
+	graphregion(margin(zero) fcolor(white) ///
+	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
+	ilpattern(blank)) xcommon note("vertical lines mark recession years" "${datasource}")
+	
 	
 *v456
 ** SAVINGS
