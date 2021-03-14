@@ -1,4 +1,3 @@
-
 include "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/do/paths.do"
 **LOAD DATA INCL FRAMES
 run "${do}/data_prep.do"
@@ -8,88 +7,14 @@ frame change CHILE
 **************************
 *CHAPTER 3 PLOTS & FIGURES
 **************************
+/*
+frame CHILE {
+	
+	cd "${output}/`: var label fr_id '/ch3/"
+	
 
-**R&D/Technology
-	qui sum Year, detail
-	local grtitle = "Patent Applications"
-	tw tsline v732 v733 v73total, ///
-	lcolor(`: var label color_2')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
-	title(`grtitle', color(black) span) ///
-	name(patentapps, replace) ///
-	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
-	graphregion(margin(tiny)) ///
-	legend(rows(3))  
-	
-**Metals and Manufacturing
-	qui sum Year, detail
-	local grtitle = "Metals and Manufacturing"
-	tw tsline v708 v709  , ///
-	lcolor(`: var label color_5')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
-	title(`grtitle', color(black) span) ///
-	name(metalsandmanuf, replace) ///
-	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
-	graphregion(margin(tiny)) ///
-	legend(rows(4))  
-	
-**Government Debt, relative values v124 v125 v127
-	qui sum Year, detail
-	local grtitle = "Government Debt Dynamics"
-	tw tsline v484 v483 v456 v66 v482alt, ///
-	lcolor(`: var label color_5')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
-	title(`grtitle', color(black) span) ///
-	yline(0, lcolor(gs10%85)) ///
-	name(debtdyn, replace) ///
-	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
-	graphregion(margin(tiny)) ///
-	legend(rows(5))  
-	
-	
-	
-**GOV INTEREST PAYMENTS
-	qui levelsof RecYear, local(RY)
-	qui sum Year, detail
-	local grtitle = "Government Interest Payments"
-	tw tsline v482alt v278 v277, ///
-	lcolor(`: var label color_5')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
-	title(`grtitle', color(black) span) ///
-	yline(0, lcolor(gs10%85)) ///
-	name(govinterest, replace) ///
-	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
-	graphregion(margin(tiny)) ///
-	legend(cols(2)  span)  ///
-	xline(`RY' , lcolor(gs9%85)) nodraw
-
-	
-**Revenue, Expense, Deficit
-	qui levelsof RecYear, local(RY)
-	qui sum Year, detail
-	local grtitle = "Revenue, Expense, and the Budget"
-	tw tsline totalrevreal  expensereal budgetdefreal, ///
-	lcolor(`: var label color_5')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
-	title("`grtitle'", color(black) span) ///
-	yline(0, lcolor(gs10%85)) ///
-	name(budgetdef, replace) ///
-	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
-	graphregion(margin(tiny)) ///
-	legend(cols(2) span)  ///
-	xline(`RY' , lcolor(gs9%85))  ///
-	note("values calculated from WDI series gc_rev_gotr_cn, gc_tax_totl_cn, gc_xpn_totl_cn, ny_gdp_defl_zs") nodraw
-
-	
-	gr combine budgetdef govinterest, ///
-	rows(2) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
-	caption(, nobox) note($datasource, nobox) name(govdebtdyn, replace) ///
-	xsize(7) ysize(7) scale(0.8) ///
-	graphregion(margin(zero) fcolor(white) ///
-	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
-	ilpattern(blank)) xcommon note("vertical lines mark recession years" "${datasource}")
-	
-	
+}	
+*/
 *v456
 ** SAVINGS
 *v231 
@@ -107,14 +32,14 @@ maybe interesting: v423, v294
 */
 
 
-/*
+
 foreach frame in "frame JAPAN" "frame CHILE" {
 	
 	`frame' {
-*/
+
 	cd "${output}/`: var label fr_id '/ch3/"
 		
-	**POPULATION
+	**POPULATION GROWTH
 	qui levelsof RecYear, local(RY)
 	qui sum Year, detail
 	local grtitle = "Population Growth"
@@ -127,9 +52,9 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	graphregion(margin(tiny)) ///
 	legend(rows(3)) ///
 	xline(`RY' , lcolor(gs10%85)) ///
-	yline(0, lcolor(gs10%85) nodraw
+	yline(0, lcolor(gs10%85)) nodraw
 	
-	
+	**POPULATION GROWTH
 	qui levelsof RecYear, local(RY)
 	qui sum Year, detail
 	local grtitle = "Population Composition"
@@ -143,19 +68,136 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	legend(rows(3)) ///
 	xline(`RY' , lcolor(gs9%85))  nodraw
 	
+	**COMBINE POPULATION GRAPHS
 	gr combine popgrowth popcomp, ///
 	rows(2) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
 	caption(, nobox) note($datasource, nobox) name(labor_infl, replace) ///
 	xsize(7) scale(0.8) ///
 	graphregion(margin(zero) fcolor(white) ///
 	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
-	ilpattern(blank)) xcommon note("vertical lines mark recession years" "${datasource}")
+	ilpattern(blank)) xcommon ///
+	note("vertical lines mark recession years" "${datasource}")
 	
 	gr export "Population Growth and Composition.png", replace
 
+************************************
+************************************
 
+	**GOV INTEREST PAYMENTS
+	qui levelsof RecYear, local(RY)
+	qui sum Year, detail
+	local grtitle = "Government Interest Payments"
+	tw tsline v482alt v278 v277, ///
+	lcolor(`: var label color_5')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
+	title(`grtitle', color(black) span) ///
+	yline(0, lcolor(gs10%85)) ///
+	name(govinterest, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(cols(2)  span)  ///
+	xline(`RY' , lcolor(gs9%85)) nodraw
 	
-/*
+	**Revenue, Expense, Deficit
+	qui levelsof RecYear, local(RY)
+	qui sum Year, detail
+	local grtitle = "Revenue, Expense, and the Budget"
+	tw tsline totalrevreal  expensereal budgetdefreal, ///
+	lcolor(`: var label color_5')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
+	title("`grtitle'", color(black) span) ///
+	yline(0, lcolor(gs10%85)) ///
+	name(budgetdef, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(cols(2) span)  ///
+	xline(`RY' , lcolor(gs9%85))  ///
+	note("values calculated from WDI series gc_rev_gotr_cn, gc_tax_totl_cn, gc_xpn_totl_cn, ny_gdp_defl_zs") nodraw
+	
+	**Change in GDP, Deficit, Interest Paid
+	qui levelsof RecYear, local(RY)
+	qui sum Year, detail
+	local grtitle = "Changes in GDP and the Deficit"
+	tw tsline v198 v456 v278 budgetdefreal_pc, ///
+	lcolor(`: var label color_5')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
+	title("`grtitle'", color(black) span) ///
+	lpattern(solid solid dash) ///
+	yline(0, lcolor(gs10%85)) ///
+	name(deficitch, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(cols(2) span)  ///
+	xline(`RY' , lcolor(gs9%85)) nodraw
+
+
+	**COMBINE DEFICIT/INTEREST GRAPHS
+	gr combine budgetdef govinterest deficitch, ///
+	rows(3) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
+	caption(, nobox) note($datasource, nobox) name(govdebtdyn, replace) ///
+	xsize(7) ysize(10) scale(0.8) ///
+	graphregion(margin(zero) fcolor(white) ///
+	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
+	ilpattern(blank)) xcommon ///
+	note("vertical lines mark recession years" "${datasource}")
+	gr export "Debt Dynamics.png", replace
+
+************************************
+************************************
+
+	**R&D/Technology
+	qui sum Year, detail
+	local grtitle = "Patent Applications"
+	tw tsline v732 v733 v73total, ///
+	lcolor(`: var label color_2')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	title(`grtitle', color(black) span) ///
+	name(patentapps, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(rows(3))  
+	
+	**Metals and Manufacturing
+	qui sum Year, detail
+	local grtitle = "Metals and Manufacturing"
+	tw tsline v708 v709  , ///
+	lcolor(`: var label color_5')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	title(`grtitle', color(black) span) ///
+	name(metalsandmanuf, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(rows(4))  
+	
+	**MANUFACTURING
+	qui sum Year, detail
+	local grtitle = "Metals and Manufacturing"
+	tw tsline v412 v709  , ///
+	lcolor(`: var label color_5')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	title(`grtitle', color(black) span) ///
+	name(metalsandmanuf, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(rows(4))
+	
+	**Government Debt, relative values v124 v125 v127
+	qui sum Year, detail
+	local grtitle = "Government Debt Dynamics"
+	tw tsline v484 v483 v456 v66 v482alt, ///
+	lcolor(`: var label color_5')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	title(`grtitle', color(black) span) ///
+	yline(0, lcolor(gs10%85)) ///
+	name(debtdyn, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(rows(5))  
+	
+************************************
+************************************
+
+	/* v16-v27 v33-v37 v61-v64 v67-v72 v101-v108
 gr drop _all
 		
 	}

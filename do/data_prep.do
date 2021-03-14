@@ -160,9 +160,22 @@ la var color_scat "navy%80"
 la var color_s_line "red"
 
 drop if Year<1984 | Year>2016
-***REPLACE "LCU" by "JPY"
-labvarch v* , subst("LCU" "JPY") 
+
+******DECLARE DATA TO BE TIME SERIES 
 tsset Year
+
+***REPLACE "LCU" by "JPY"
+labvarch _all , subst("LCU" "JPY") 
+
+****GEN LAGGED VARIABLES
+gen budgetdefreal_pc = (100*D.budgetdefreal/L.budgetdefreal)
+la var budgetdefreal_pc "Percentage Change in the Budget Surplus"
+order budgetdefreal_pc, after(budgetdefreal)
+
+gen v484_pc = (100*D.v484/L.v484)
+la var v484_pc "% Change in Interest Payments as % of Expense"
+order v484_pc, after(v484)
+
 *****gen vars for percentage changes in unnemployment and inflation
 labvarch v416 , to(")")
 gen v416_pc_ch = (v416/L.v416-1)*100
@@ -203,9 +216,22 @@ la var color_scat "dkgreen%80"
 la var color_s_line "orange"
 
 drop if Year<1979 | Year>2011
+
+******DECLARE DATA TO BE TIME SERIES 
+tsset Year
+
 ***REPLACE "LCU" by "CLP"
 labvarch _all , subst("LCU" "CLP") 
-tsset Year
+
+****GEN LAGGED VARIABLES
+gen budgetdefreal_pc = (100*D.budgetdefreal/L.budgetdefreal)
+la var budgetdefreal_pc "Percentage Change in the Budget Surplus"
+order budgetdefreal_pc, after(budgetdefreal)
+
+gen v484_pc = (100*D.v484/L.v484)
+la var v484_pc "% Change in Interest Payments as % of Expense"
+order v484_pc, after(v484)
+
 *****gen var for percentage change in unnemployment
 labvarch v416 , to(")")
 gen v416_pc_ch = (v416-L.v416-1)
