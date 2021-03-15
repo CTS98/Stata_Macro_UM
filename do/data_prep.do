@@ -155,7 +155,7 @@ la var fr_id "JPN"
 ****SET COLORS FOR PLOT LINES
 la var color_1 "navy"
 la var color_2 "red blue"
-la var color_5 "navy%80 magenta%80 dknavy%80 olive%80 maroon%80"
+la var color_5 "navy%80 magenta%80 blue%80 gs10%80 maroon%80"
 la var color_scat "navy%80"
 la var color_s_line "red"
 
@@ -175,6 +175,22 @@ order budgetdefreal_pc, after(budgetdefreal)
 gen v484_pc = (100*D.v484/L.v484)
 la var v484_pc "% Change in Interest Payments as % of Expense"
 order v484_pc, after(v484)
+
+gen v64_pc = (100*D.v64/L.v64)
+la var v64_pc "% Change in Central government debt as % of GDP"
+order v64_pc, after(v64)
+
+gen v283_pc = (100*D.v283/L.v283)
+la var v283_pc "% Change in Domestic credit to private sector as % of GDP"
+order v283_pc, after(v283)
+
+gen v266_pc = (100*D.v266/L.v266)
+la var v266_pc "% Change in net domestic credit"
+order v266_pc, after(v266)
+
+gen v291_pc =(100*D.v291/L.v291)
+la var v291_pc "% Change in the real exchange rate"
+order v291_pc, after(v291)
 
 *****gen vars for percentage changes in unnemployment and inflation
 labvarch v416 , to(")")
@@ -231,6 +247,22 @@ order budgetdefreal_pc, after(budgetdefreal)
 gen v484_pc = (100*D.v484/L.v484)
 la var v484_pc "% Change in Interest Payments as % of Expense"
 order v484_pc, after(v484)
+
+gen v64_pc = (100*D.v64/L.v64)
+la var v64_pc "% Change in Central government debt as % of GDP"
+order v64_pc, after(v64)
+
+gen v283_pc = (100*D.v283/L.v283)
+la var v283_pc "% Change in Domestic credit to private sector as % of GDP"
+order v283_pc, after(v283)
+
+gen v266_pc = (100*D.v266/L.v266)
+la var v266_pc "% Change in net domestic credit"
+order v266_pc, after(v266)
+
+gen v291_pc =(100*D.v291/L.v291)
+la var v291_pc "% Change in the real exchange rate"
+order v291_pc, after(v291)
 
 *****gen var for percentage change in unnemployment
 labvarch v416 , to(")")
