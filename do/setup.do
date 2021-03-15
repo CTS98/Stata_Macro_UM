@@ -37,6 +37,12 @@ cap which aaplot
 if _rc != 0 {
 	ssc install aaplot
 }
+
+* WORLDSTAT
+cap which worldstat
+if _rc != 0 {
+	ssc install worldstat
+}
 ***SET WORKING DIRECTORY
 cd "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/"
 

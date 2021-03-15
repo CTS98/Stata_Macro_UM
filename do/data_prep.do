@@ -191,6 +191,9 @@ order v266_pc, after(v266)
 gen v291_pc =(100*D.v291/L.v291)
 la var v291_pc "% Change in the real exchange rate"
 order v291_pc, after(v291)
+gen debtogdp = (v266/v195)
+la var debtogdp "Debt to GDP ratio"
+order debtogdp, last
 
 *****gen vars for percentage changes in unnemployment and inflation
 labvarch v416 , to(")")
@@ -264,6 +267,9 @@ gen v291_pc =(100*D.v291/L.v291)
 la var v291_pc "% Change in the real exchange rate"
 order v291_pc, after(v291)
 
+gen debtogdp = (v266/v195)
+la var debtogdp "Debt to GDP ratio"
+order debtogdp, last
 *****gen var for percentage change in unnemployment
 labvarch v416 , to(")")
 gen v416_pc_ch = (v416-L.v416-1)
