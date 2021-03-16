@@ -8,17 +8,7 @@ run "${do}/data_prep.do"
 **************************
 *CHAPTER 3 PLOTS & FIGURES
 **************************
-/*
-frame CHILE {
-	
-	cd "${output}/`: var label fr_id '/ch3/"
-	
 
-}	
-*/
-*v456
-** SAVINGS
-*v231 
 /*IDEAS
 
 from syllabus: In weeks 5 and 6, we discuss the long run and policy issues, including fiscal policy. Again, we focus on the changes in your country throughout the time period you are analyzing. 
@@ -43,14 +33,18 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	`frame' {
 
 	cd "${output}/`: var label fr_id '/ch3/"
-		
+	
+	if CC=="CHL" {
+		graph set window fontface "Times New Roman"
+	} 
+	
 	**POPULATION GROWTH
 	qui levelsof RecYear, local(RY)
 	qui sum Year, detail
 	local grtitle = "Population Growth"
 	tw tsline v567 v573 v574, nodraw ///
 	lcolor(`: var label color_2')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	name(popgrowth, replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
@@ -65,7 +59,7 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	local grtitle = "Population Composition"
 	tw tsline v576 v572 v570, nodraw ///
 	lcolor(`: var label color_2') lpattern(solid dash) ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	name(popcomp, replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
@@ -154,7 +148,7 @@ if CC=="CHL" {
 	local grtitle = "Patent Applications"
 	tw tsline v732 v733 v73total, nodraw ///
 	lcolor(`: var label color_2')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	name(patentapps, replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
@@ -168,7 +162,7 @@ if CC=="CHL" {
 	local grtitle = "Metals and Manufacturing"
 	tw tsline v708 v709  , nodraw ///
 	lcolor(`: var label color_5')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	name(metalsandmanuf, replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
@@ -190,7 +184,7 @@ if CC=="CHL" {
 	local grtitle = "Government Debt Dynamics"
 	tw tsline v484 v483 v456 v66 v482alt, ///
 	lcolor(`: var label color_5')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	yline(0, lcolor(gs10%85)) ///
 	name(debtdyn, replace) ///
@@ -259,7 +253,7 @@ if CC=="CHL" {
 	tw tsline v64_pc v283_pc v278 v277, nodraw ///
 	lpattern(solid solid solid dash) ///
 	lcolor(`: var label color_5')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	yline(0, lcolor(gs10%85)) ///
 	xline(`RY' , lcolor(gs9%85)) ///
@@ -275,7 +269,7 @@ if CC=="CHL" {
 	tw tsline v278 v266_pc v283_pc  v291_pc	, nodraw ///
 	lpattern(solid solid dash longdash) ///
 	lcolor(`: var label color_2' green%60 teal%60)  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%20.0gc)) ytitle("") ///
+	ylabel(#5, nogrid angle(0) format(%20.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	yline(0, lcolor(gs10%85)) ///
 	xline(`RY' , lcolor(gs9%85)) ///
@@ -305,7 +299,7 @@ if CC=="CHL" {
 	tw tsline debtogdp v198, nodraw   ///
 	lpattern(solid solid dash longdash) ///
 	lcolor(`: var label color_2' green%60 teal%60)  ${grs} ///
-	ylabel(#7, nogrid angle(0) format(%5.0gc)) ytitle("") ///
+	ylabel(#7, nogrid angle(0) format(%5.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	yline(0, lcolor(gs10%85)) ///
 	xline(`RY' , lcolor(gs9%85)) ///
@@ -322,7 +316,7 @@ if CC=="CHL" {
 	(tsline  v199t , nodraw ///
 	lpattern(solid solid dash longdash) ///
 	lcolor(`: var label color_2' green%60 teal%60)  ${grs} ///
-	ylabel(#7, nogrid angle(0) format(%5.0gc)) ytitle("") ///
+	ylabel(#7, nogrid angle(0) format(%5.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	yline(0, lcolor(gs10%85)) ///
 	xline(`RY' , lcolor(gs9%85)) ///
@@ -354,7 +348,7 @@ if CC=="CHL" {
 	(tsline  v117 v211 , nodraw  ///
 	lpattern(solid solid dash longdash) ///
 	lcolor(`: var label color_2' green%60 teal%60)  ${grs} ///
-	ylabel(#7, nogrid angle(0) format(%5.0gc)) ytitle("") ///
+	ylabel(#7, nogrid angle(0) format(%5.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	xline(`RY' , lcolor(gs9%85)) ///
 	name(savinginvest, replace) ///
@@ -373,7 +367,7 @@ if CC=="CHL" {
 	(tsline  v117 v211 , nodraw  ///
 	lpattern(solid solid dash longdash) ///
 	lcolor(`: var label color_2' green%60 teal%60)  ${grs} ///
-	ylabel(#7, nogrid angle(0) format(%5.0gc)) ytitle("") ///
+	ylabel(#7, nogrid angle(0) format(%5.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	xline(`RY' , lcolor(gs9%85)) ///
 	name(savinginvest, replace) ///
@@ -416,20 +410,7 @@ if CC=="CHL" {
 	note("vertical lines mark recession years" "${datasource}")
 	gr export "Saving and Income Ineq.png", replace
 	
-preserve
 
-	worldstat SAmerica, stat(SI.POV.GINI) sname("Gini Coefficient") year(2015) maponly cname 
-	gr export "Gini South America.png", replace
-	gr close
-	
-	worldstat SAmerica, stat(ny.gdp.mktp.kd.zg) sname("GDP growth, annual %") ///
-	year(2015) maponly cname 
-	gr export "GDP growth map.png", replace
-	
-	worldstat SAmerica, stat(gb.xpd.rsdv.gd.zs) sname("R&D expenditure (% of GDP)") ///
-	year(2015) maponly cname 
-	gr export "GDP RandD map.png", replace
-	restore
 	}
 	
 	if CC=="JPN" {
@@ -444,7 +425,7 @@ preserve
 	(tsline   v730 v158,   ///
 	lpattern(solid solid dash longdash) ///
 	lcolor(`: var label color_2' green%60 teal%60)  ${grs} ///
-	ylabel(#7, nogrid angle(0) format(%5.0gc)) ytitle("") ///
+	ylabel(#7, nogrid angle(0) format(%5.0gc)) xtitle("") ytitle("") ///
 	title(`grtitle', color(black) span) ///
 	xline(`RY' , lcolor(gs9%85)) ///
 	name(randd, replace) ///
@@ -465,20 +446,7 @@ preserve
 	note("vertical lines mark recession years" "${datasource}")
 	gr export "Saving and Income Ineq.png", replace
 	
-	preserve
 
-	worldstat Asia, stat(SP.POP.DPND.OL) sname("Age dependency ratio, 64+") ///
-	year(2015) maponly cname 
-	gr export "Age map asia.png", replace
-	
-
-	
-	worldstat Asia, stat(gb.xpd.rsdv.gd.zs) sname("Research and development expenditure (% of GDP)") ///
-	year(2015) maponly cname 
-	gr export "GDP RandD map.png", replace
-	gr close
-	
-	restore
 	}
 	* v16-v27 v33-v37 v61-v64 v67-v72 v101-v108 v266
 gr drop _all
