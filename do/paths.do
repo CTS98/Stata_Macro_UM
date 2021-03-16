@@ -19,3 +19,5 @@ global datasource "Data Retrieved 27/02/21 from World Bank DataBank"
 
 ***SET GRAPH SCHEME
 global grs "color(white) color(black) plotregion(fcolor(white)) graphregion(fcolor(white)) bgcolor(white)"
+
+graph set window fontface "Times New Roman"
