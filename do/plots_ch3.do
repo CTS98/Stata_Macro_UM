@@ -244,6 +244,9 @@ if CC=="CHL" {
 	note("vertical lines mark recession years" "${datasource}")
 	gr export "Gov and Private Debt Dynamics.png", replace
 	
+	***MAKE R&D GRAPH
+	
+	**COMBINE R&D and patents graphs
 	}
 		
 	***PERCENT CHANGES
