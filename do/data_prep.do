@@ -155,7 +155,7 @@ la var fr_id "JPN"
 ****SET COLORS FOR PLOT LINES
 la var color_1 "navy"
 la var color_2 "red blue"
-la var color_5 "navy%80 magenta%80 blue%80 gs10%80 maroon%80"
+la var color_5 "navy%80 magenta%80 blue%80 forest_green%80 maroon%80"
 la var color_scat "navy%80"
 la var color_s_line "red"
 

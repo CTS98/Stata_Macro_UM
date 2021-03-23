@@ -3,8 +3,6 @@ qui include "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/do/paths.do"
 **LOAD DATA INCL FRAMES
 run "${do}/data_prep.do"
 
-preserve
-
 **************************
 *SET UP HP TRENDS
 **************************
@@ -52,15 +50,15 @@ la var interest_trend "Trend in lending rate (HP)"
 la var unemp_trend "Trend in unemployment rate (HP)"
 la var gdp_trend "Trend in GDP (HP)"
 la var gdp_cyc "Cyclical component of GDP"
-la var unemp_cyc "Cyclical component of the unemployment rate"
+la var unemp_cyc "Cyclical component of unemployment"
 la var NAIRU "Mean Unemployment Rate across period"
 la var NAIRU_trend "Mean Unemployment Rate less cyclical"
 la var interest_dev "Deviation from trend in interest rate"
 la var gdp_dev "Deviation from trend in GDP"
-la var unemp_dev "Deviation from trend in the unemployment rate"
+la var unemp_dev "Deviation from trend in unemployment"
 
-la var infl_cyc "Cyclical cmponent of inflation"
-la var infl_trend "Trend in Inflation"
+la var infl_cyc "Cyclical component of inflation"
+la var infl_trend "Trend in inflation"
 la var infl_dev "Deviation from trend in inflation"
 ****************************
 *CREATE TAYLOR RULES VARS
@@ -77,8 +75,7 @@ la var taylor_93_5 "Policy rate of 1993 Taylor Rule, Target 5%, coefficients 0.5
 	}
 	}
 save "${data}/Final.dta", replace
-restore 
-use  "${data}/Final.dta", clear
+
 
 **************************
 *CHAPTER 4 PLOTS & FIGURES
@@ -91,7 +88,7 @@ In the first part (which is the relatively longer of the two), you will study th
 
 */
 
-
+graph set window fontface default
 
 foreach frame in "frame JAPAN" "frame CHILE" {
 	
@@ -124,7 +121,8 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	local grtitle = "Cyclical components of trends"
 	tw tsline interest_cyc unemp_cyc gdp_cyc infl_cyc , nodraw ///
 	lcolor(`: var label color_5')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ytitle("%", orientation(horizontal)) ///
+	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
+	ytitle("%", orientation(horizontal)) ///
 	title(`grtitle', color(black) span) ///
 	name(cyccomps, replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
@@ -138,7 +136,8 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	local grtitle = "Deviations from trends"
 	tw tsline interest_dev unemp_dev gdp_dev infl_dev , nodraw ///
 	lcolor(`: var label color_5')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ytitle("%", orientation(horizontal)) ///
+	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
+	ytitle("%", orientation(horizontal)) ///
 	title(`grtitle', color(black) span) ///
 	name(trenddevs, replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
@@ -157,6 +156,16 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	note("vertical lines mark recession years" "${datasource}")
 	
 	gr export "HP Trends triple panel.png", replace
+	gr close
+	
+	gr combine trendcomps  trenddevs , ///
+	rows(3) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
+	caption(, nobox) note(, nobox) name(trendpanelsslim, replace) ///
+	xsize(7) scale(0.8) xcommon ///
+	graphregion(margin(zero) fcolor(white) ///
+	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
+	ilpattern(blank))  
+	gr close
 	
 	if CC=="JPN" {
 	qui levelsof RecYear, local(RY)
@@ -207,7 +216,7 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	qui levelsof RecYear, local(RY)
 	qui sum Year if taylor_93_0!=.
 	local grtitle = "Money Supply"
-	tw tsline v272 v288, nodraw  ///
+	tw tsline v272 v288 if v288!=. , nodraw  ///
 	lcolor(`: var label color_2' gs10%80 purple%90)  ${grs} ///
 	lpattern(solid dash) ///
 	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
@@ -220,6 +229,9 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	xline(`RY' , lcolor(gs10%85)) ///
 	yline(0, lcolor(gs10%85)) 
 	
+	********
+	*COMBINE
+	********
 	gr combine moneytarg "T93area.gph", ///
 	cols(2) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
 	caption(, nobox) note($datasource, nobox) name(targeting, replace) ///
@@ -230,17 +242,21 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	note("vertical lines mark recession years" "${datasource}")
 	
 	gr export "Money and Inflation Targeting.png", replace
+	gr close
 	
-	gr combine trendpanels targeting, ///
-	rows(2) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
-	caption(, nobox) note($datasource, nobox) name(targeting, replace) ///
-	xsize(7) scale(0.8)  ///
+	gr combine trendpanelsslim moneytarg "T93area.gph", ///
+	rows(5) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
+	caption(, nobox) note($datasource, nobox) name(mega, replace) ///
+	xsize(10) ysize(14) scale(0.8)  ///
+	imargin(zero) ///
 	graphregion(margin(zero) fcolor(white) ///
 	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
 	ilpattern(blank))  ///
-	note("vertical lines mark recession years" "${datasource}")
+	note("vertical lines mark recession years; functional form of Taylor Rule adopted from Taylor (1993)" ///
+	"Trends are estimated using a Hodrick-Prescott Filter (cf. Wooldridge, 2020)" "${datasource}")
 	
 	gr export "Mega Graph.png", replace
+	gr close
 	
 gr drop _all
 	
