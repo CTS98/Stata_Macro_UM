@@ -55,6 +55,8 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	} 
 ****MERGE IN POLICY RATE DATA
 merge Year using "${apidata}/`: var label fr_id '_rates.dta"
+
+la var policy_rate "Policy rate, monthly mean"
 ****GENERATE HP TRENDS
 tsfilter hp interest_cyc = v276 , trend(interest_trend)
 
@@ -73,7 +75,8 @@ egen NAIRU_trend = mean(unemp_trend)
 
 egen NAIRU = mean(v416)
 
-gen unemp_dev = v416-unemp_trend
+*gen unemp_dev = v416-unemp_trend
+gen unemp_dev = v416-NAIRU
 
 gen infl_dev = v288-infl_trend
 
