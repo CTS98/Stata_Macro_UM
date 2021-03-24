@@ -16,9 +16,9 @@ In the first part (which is the relatively longer of the two), you will study th
 
 graph set window fontface default
 
-foreach frame in "frame JAPAN" "frame CHILE" {
+foreach frame in  "JAPAN" "CHILE" {
 	
-	`frame' {
+	frame change `frame' 
 
 	cd "${output}/`: var label fr_id '/ch4/"
 	
@@ -85,6 +85,7 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	gr close
 	
 	if CC=="JPN" {
+		
 	qui levelsof RecYear, local(RY)
 	qui sum Year if taylor_93_0!=.
 	local grtitle = "Taylor 1993"
@@ -104,9 +105,11 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	xline(`RY' , lcolor(gs10%85)) ) ///
 	(rarea taylor_93_0 taylor_93_2 Year if taylor_93_0!=., sort ///
 	color(gs10%80) fcolor(gs11%60) )
+	
 	}
 	
 	if CC=="CHL" {
+		
 	qui levelsof RecYear, local(RY)
 	qui sum Year if taylor_93_0!=.
 	local grtitle = "Taylor 1993"
@@ -126,6 +129,8 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	xline(`RY' , lcolor(gs10%85)) ) ///
 	(rarea taylor_93_0 taylor_93_5 Year if taylor_93_0!=., sort ///
 	color(gs10%80) fcolor(gs11%60) )
+	
+	gr save "T93area.gph", replace
 	}
 	
 	*****************
@@ -382,5 +387,5 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	
 	
 	}
-}
+
 
