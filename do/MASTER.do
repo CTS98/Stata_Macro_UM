@@ -31,3 +31,6 @@ run "${do}/plots_ch2.do"
 
 **PRODUCE FIGURES FOR CHAPTER 3
 run "${do}/plots_ch3.do"
+
+**PRODUCE FIGURES FOR CHAPTER 4
+run "${do}/plots_ch4.do"

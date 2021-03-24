@@ -155,7 +155,7 @@ la var fr_id "JPN"
 ****SET COLORS FOR PLOT LINES
 la var color_1 "navy"
 la var color_2 "red blue"
-la var color_5 "navy%80 magenta%80 blue%80 gs10%80 maroon%80"
+la var color_5 "navy%80 magenta%80 blue%80 forest_green%80 maroon%80"
 la var color_scat "navy%80"
 la var color_s_line "red"
 
@@ -218,7 +218,7 @@ replace RYString = "" if RYString=="."
 gen double v367opp = 100-v367
 order v367opp, after (v367)
 la var v367opp "Labor force participation rate for ages 25+, total (%)"
-
+sort Year
 la da "World Bank Economic Indicators, Japan, 1984-2016"
 save "${data}/JPN_prepared.dta", replace
 }
@@ -293,7 +293,7 @@ gen double v367opp = 100-v367
 order v367opp, after (v367)
 la var v367opp "Labor force participation rate for ages 25+, total (%)"
 
-
+sort Year
 la da "World Bank Economic Indicators, Chile, 1979-2011"
 save "${data}/CHL_prepared.dta", replace
 }

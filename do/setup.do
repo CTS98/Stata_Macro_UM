@@ -43,8 +43,11 @@ cap which worldstat
 if _rc != 0 {
 	ssc install worldstat
 }
-***SET WORKING DIRECTORY
-cd "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/"
 
+* tabout
+cap which tabout
+if _rc != 0 {
+	ssc install tabout
+}
 
 
