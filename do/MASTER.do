@@ -7,7 +7,7 @@ set more off
 cd "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata"
 
 ***INCLUDE PATHS AND GLOBALS
-include "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/do/paths.do"
+include "/Users/ts/Git/Stata_Macro_UM/do/paths.do"
 *SETUP: COMMENT IN AND RUN TO SSC INSTALL PACKAGES REQUIRED
 *run "${do}/setup.do"
 

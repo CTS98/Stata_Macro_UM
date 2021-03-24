@@ -1,7 +1,7 @@
 ***SET WORKING DIRECTORY
 cd "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/"
 
-include "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/do/paths.do"
+qui include "/Users/ts/Git/Stata_Macro_UM/do/paths.do"
 
 use "${apidata}/WBAPI_merged_raw.dta", clear
 des

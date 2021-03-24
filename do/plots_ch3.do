@@ -1,5 +1,5 @@
 clear all
-qui include "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/do/paths.do"
+qui include "/Users/ts/Git/Stata_Macro_UM/do/paths.do"
 **LOAD DATA INCL FRAMES
 run "${do}/data_prep.do"
 
