@@ -16,7 +16,6 @@ In the first part (which is the relatively longer of the two), you will study th
 */
 
 graph set window fontface default
-frame change JAPAN
 
 foreach frame in "frame JAPAN" "frame CHILE" {
 	
