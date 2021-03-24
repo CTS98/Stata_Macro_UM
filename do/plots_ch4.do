@@ -383,8 +383,9 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	
 	gr drop _all
 	
-
-	
+******DELETE GPH GRAPHS
+erase T93area.gph
+erase Taylorarea.gph
 	
 	}
 
