@@ -84,10 +84,10 @@ foreach frame in  "JAPAN" "CHILE" {
 	ilpattern(blank))  
 	gr close
 	
-	if CC=="JPN" {
+
 		
 	qui levelsof RecYear, local(RY)
-	qui sum Year if taylor_93_0!=.
+	qui sum Year if taylor_93_0!=. 
 	local grtitle = "Taylor 1993"
 	tw (tsline taylor_93_0  taylor_93_2 taylor_93_1 policy_rate ///
 	if taylor_93_0!=., nodraw ///
@@ -106,12 +106,10 @@ foreach frame in  "JAPAN" "CHILE" {
 	(rarea taylor_93_0 taylor_93_2 Year if taylor_93_0!=., sort ///
 	color(gs10%80) fcolor(gs11%60) )
 	
-	}
-	
-	if CC=="CHL" {
-		
+	gr save "T93area.gph", replace
+if CC=="CHL" {
 	qui levelsof RecYear, local(RY)
-	qui sum Year if taylor_93_0!=.
+	qui sum Year if taylor_93_0!=. 
 	local grtitle = "Taylor 1993"
 	tw (tsline taylor_93_0  taylor_93_5 taylor_93_2  ///
 	policy_rate if taylor_93_0!=., nodraw ///
@@ -131,7 +129,7 @@ foreach frame in  "JAPAN" "CHILE" {
 	color(gs10%80) fcolor(gs11%60) )
 	
 	gr save "T93area.gph", replace
-	}
+}
 	
 	*****************
 	*MONEY TARGETING
@@ -194,9 +192,9 @@ local trmin = `r(min)'
 
 restore
 
-if CC=="JPN" {
+if CC!="CHL" {
 preserve
-rolling _b, window(6): reg policy_rate gdp_dev infl_dev, r beta
+rolling _b, window(6): reg policy_rate gdp_dev infl_dev , r beta
 keep if _b_infl_dev>0 & _b_gdp_dev>0 & _b_infl_dev!=.
 list
 qui sum start
@@ -206,9 +204,9 @@ restore
 }
 
 
-if CC=="JPN" {
+
 eststo : reg policy_rate infl_dev gdp_dev, r beta
-eststo : reg policy_rate infl_dev gdp_dev if Year>=`t93min' & CC=="JPN", r beta
+eststo : reg policy_rate infl_dev gdp_dev if Year>=`t93min', r beta
 eststo : reg policy_rate infl_dev unemp_dev , r beta
 eststo : reg policy_rate infl_dev unemp_dev if Year>=`trmin', r beta
 
@@ -223,7 +221,7 @@ addnotes("Naive refers to Regressions over the entire period" ///
 "Heteroskedasticity-robust std. errors used across all models" ///
 "Standardized beta coefficients reported to facilitate cross-model comparisons")
 eststo clear
-}
+
 
 if CC=="CHL" {
 eststo : reg policy_rate infl_dev gdp_dev, r beta
@@ -301,7 +299,7 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 
 	gr combine trendpanelsslim  taylorcomp, ///
 	rows(2) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
-	caption(, nobox)  name(taylorcomp, replace) ///
+	caption(, nobox)  name(mega2, replace) ///
 	xsize(7) scale(0.8)  ///
 	graphregion(margin(zero) fcolor(white) ///
 	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
