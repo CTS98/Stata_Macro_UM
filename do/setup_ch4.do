@@ -32,7 +32,6 @@ frame chile{
 	save "${apidata}/CHL_rates.dta", replace
 }
 frame japan{
-	set dp period
 	keep if month==6
 	sort Year
 	tsset Year
