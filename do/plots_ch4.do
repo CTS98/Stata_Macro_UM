@@ -77,11 +77,11 @@ foreach frame in  "JAPAN" "CHILE" {
 	
 	gr combine trendcomps  cyccomps , ///
 	rows(3) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
-	caption(, nobox) note(, nobox) name(trendpanelsslim, replace) ///
+	caption(, nobox)  name(trendpanelsslim, replace) ///
 	xsize(7) scale(0.8) xcommon ///
 	graphregion(margin(zero) fcolor(white) ///
 	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
-	ilpattern(blank))  
+	ilpattern(blank))  note("Trends are estimated using a Hodrick-Prescott Filter (cf. Wooldridge, 2020)")
 	gr close
 	
 
@@ -303,7 +303,7 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	xsize(7) scale(0.8)  ///
 	graphregion(margin(zero) fcolor(white) ///
 	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
-	ilpattern(blank)) note("Trends are estimated using a Hodrick-Prescott Filter (cf. Wooldridge, 2020)")
+	ilpattern(blank)) 
 	
 	gr export "Mega Graph 2.png", replace 
 	gr close
