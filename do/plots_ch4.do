@@ -349,7 +349,7 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	
 	qui levelsof RecYear, local(RY)
 	qui sum Year
-	local grtitle = "FX"
+	local grtitle = "Exchange Rate and capital flows"
 	tw tsline  v291_pc v17 v13 , nodraw ///
 	lpattern(longdash solid dash solid) ///
 	lcolor(`: var label color_2' `: var label color_scat')  ${grs} ///
@@ -367,10 +367,10 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	*COMBINE
 	********
 	
-	gr combine broadmoney rates fx, ///
+	gr combine fx rates  broadmoney, ///
 	rows(3) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
 	caption(, nobox)  name(moneyratesfx, replace) ///
-	xsize(7) scale(0.8)  xcommon ///
+	xsize(7) ysize(10) scale(0.8)  xcommon ///
 	graphregion(margin(zero) fcolor(white) ///
 	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
 	ilpattern(blank))  ///
