@@ -7,8 +7,8 @@ qui include "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/do/paths.do"
 import excel "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/data/cbpol_2103.xlsx", sheet("Monthly Series") firstrow
 keep Backtomenu CentralbankpolicyratesChi CentralbankpolicyratesJap
 ren Backtomenu date
-encode CentralbankpolicyratesChi, gen(CBRateCHL)
-encode CentralbankpolicyratesJap, gen(CBRateJPN)
+gen CBRateCHL = real(CentralbankpolicyratesChi)
+gen CBRateJPN = real(CentralbankpolicyratesJap)
 drop Centralbank*
 replace CBRateJPN =0 if CBRateJPN==.
 
@@ -28,7 +28,7 @@ frame chile{
 	tsset Year
 	ren CBRateCHL policy_rate
 	keep policy_rate Year
-	tsfill
+	la drop _all
 	save "${apidata}/CHL_rates.dta", replace
 }
 frame japan{
@@ -37,7 +37,7 @@ frame japan{
 	tsset Year
 	ren CBRateJPN policy_rate
 	keep policy_rate Year
-	tsfill
+	la drop _all
 	save "${apidata}/JPN_rates.dta", replace
 }
 
