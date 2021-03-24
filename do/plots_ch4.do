@@ -3,7 +3,6 @@ qui include "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/do/paths.do"
 **LOAD DATA INCL FRAMES
 run "${do}/setup_ch4.do"
 
-
 **************************
 *CHAPTER 4 PLOTS & FIGURES
 **************************
@@ -225,8 +224,12 @@ gen taylor_est_2 = 2+ _b[_cons] + _b[infl_dev]*infl_dev + ///
 _b[unemp_dev]*(v288-2) //TARGET=2%
 gen taylor_est_0 = _b[_cons] + _b[infl_dev]*infl_dev + ///
 _b[unemp_dev]*(v288-0) //TARGET=0%
+gen taylor_est_1 = _b[_cons] + _b[infl_dev]*infl_dev + ///
+_b[unemp_dev]*(v288-1) +1 //TARGET=1%
+
 la var taylor_est_2 "Policy rate according to the estimated Taylor Rule, Target 2% "
 la var taylor_est_0 "Policy rate according to the estimated Taylor Rule, Target 0% "
+la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 1% "
 
 	local beta1hat : di %3.2f _b[infl_dev]
 	local beta2hat : di %3.2f _b[unemp_dev]
@@ -234,9 +237,9 @@ la var taylor_est_0 "Policy rate according to the estimated Taylor Rule, Target 
 	qui levelsof RecYear, local(RY)
 	qui sum Year if taylor_93_0!=.
 	local grtitle = "Estimated Taylor Rule"
-	tw (tsline taylor_est_2  taylor_est_0 policy_rate ///
-	if taylor_93_0!=., nodraw ///
-	lcolor(`: var label color_2'  purple%90)  ${grs} ///
+	tw (tsline taylor_est_2  taylor_est_0 taylor_est_1 policy_rate ///
+	if taylor_93_0!=.,  ///
+	lcolor(`: var label color_2' gs12%85 purple%90)  ${grs} ///
 	lpattern(solid solid dash longdash) ///
 	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
 	ytitle("%", orientation(horizontal)) ///
@@ -245,11 +248,13 @@ la var taylor_est_0 "Policy rate according to the estimated Taylor Rule, Target 
 	saving("Taylorarea.gph", replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
 	graphregion(margin(tiny)) ///
-	legend(rows(5) order (3 2 1 4 ) label(4 "Policy Rate Corridor")) ///
+	legend(rows(6) order(4 1  2 5) ///
+	label(5 "Policy rate corridor (Target 0,1,2 %)") ///
+	label(4 "Actual Policy Rate")) ///
 	xline(`RY' , lcolor(gs10%85)) yline(0, lcolor(gs10%85)) ///
 	note("Estimated Taylor Rule Coefficients are `beta1hat' for inflation, `beta2hat' for unemployment", span size(*1.5))) ///
 	(rarea taylor_est_0 taylor_est_2 Year if taylor_est_0!=., sort ///
-	color(gs10%80) fcolor(gs11%60) ) ///
+	color(gs10%80) fcolor(gs11%60) ) 
 	
 
 *********************
