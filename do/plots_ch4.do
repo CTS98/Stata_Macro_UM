@@ -327,7 +327,7 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	name(broadmoney, replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
 	graphregion(margin(tiny)) ///
-	legend(cols(2) ) ///
+	legend(rows(2) ) ///
 	xline(`RY' , lcolor(gs10%85)) ///
 	yline(0, lcolor(gs10%85))
 	
@@ -343,7 +343,7 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	name(rates, replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
 	graphregion(margin(tiny)) ///
-	legend(cols(3) ) ///
+	legend(rows(2) ) ///
 	xline(`RY' , lcolor(gs10%85)) ///
 	yline(0, lcolor(gs10%85))
 	
@@ -359,7 +359,7 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	name(fx, replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
 	graphregion(margin(tiny)) ///
-	legend(cols(3) ) ///
+	legend(rows(2) symxsize(2.8pt)) ///
 	xline(`RY' , lcolor(gs10%85)) ///
 	yline(0, lcolor(gs10%85))
 	
