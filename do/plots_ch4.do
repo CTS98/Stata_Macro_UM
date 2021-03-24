@@ -185,7 +185,7 @@ rolling _b, window(6): reg policy_rate infl_dev unemp_dev, r beta
 keep if _b_infl_dev>0 & _b_unemp_dev>0 & _b_infl_dev!=.
 list
 qui sum start
-global trmin = `r(min)'
+local trmin = `r(min)'
 
 restore
 
@@ -195,19 +195,17 @@ rolling _b, window(6): reg policy_rate gdp_dev infl_dev, r beta
 keep if _b_infl_dev>0 & _b_gdp_dev>0 & _b_infl_dev!=.
 list
 qui sum start
-global t93min = `r(min)'
+local t93min = `r(min)'
 
 restore
 }
-if CC=="CHL" {
-	global t93min = 1998
-}
-eststo : reg policy_rate infl_dev gdp_dev, r beta
+
+
 if CC=="JPN" {
-	eststo : reg policy_rate infl_dev gdp_dev if Year>=${t93min}, r beta
-} 
+eststo : reg policy_rate infl_dev gdp_dev, r beta
+eststo : reg policy_rate infl_dev gdp_dev if Year>=`t93min' & CC=="JPN", r beta
 eststo : reg policy_rate infl_dev unemp_dev , r beta
-eststo : reg policy_rate infl_dev unemp_dev if Year>=${trmin}, r beta
+eststo : reg policy_rate infl_dev unemp_dev if Year>=`trmin', r beta
 
 esttab using "Regressions.html", replace ///
 star  label wide lines ar2 obslast mtitles("Taylor 93, Naive" ///
@@ -219,8 +217,27 @@ addnotes("Naive refers to Regressions over the entire period" ///
 "Rolling refers to a two-stage estimation process that estimates coefficients over rolling 5-year intervals and keeps only years with positive coefficients" ///
 "Heteroskedasticity-robust std. errors used across all models" ///
 "Standardized beta coefficients reported to facilitate cross-model comparisons")
-
 eststo clear
+}
+
+if CC=="CHL" {
+eststo : reg policy_rate infl_dev gdp_dev, r beta
+
+eststo : reg policy_rate infl_dev unemp_dev , r beta
+eststo : reg policy_rate infl_dev unemp_dev if Year>=`trmin', r beta
+
+esttab using "Regressions.html", replace ///
+star  label wide lines ar2 obslast mtitles("Taylor 93, Naive" ///
+"Taylor Rule, Naive" ///
+"Taylor Rule, Rolling" span) ///
+title("Estimated Coefficients of the Taylor Rule") ///
+addnotes("Naive Regressions have the entire period as their sample" ///
+"Rolling regressions first estimate coefficients over successive 5-year-periods and then discard years in which both coefficients are not positive" ///
+"Standardized beta coefficients reported")
+eststo clear
+}
+qui reg policy_rate infl_dev unemp_dev if Year>=`trmin', r beta
+
 
 gen taylor_est_2 = 2+ _b[_cons] + _b[infl_dev]*infl_dev + ///
 _b[unemp_dev]*(v288-2) //TARGET=2%
@@ -355,6 +372,9 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
 	ilpattern(blank))  ///
 	note("vertical lines mark recession years, ${datasource2}")
+	
+	gr export "money rates fx.png", replace
+	gr close
 	
 	gr drop _all
 	
