@@ -113,6 +113,32 @@ la var taylor_93_1 "Policy rate of 1993 Taylor Rule, Target 1%, coefficients 0.5
 la var taylor_93_2 "Policy rate of 1993 Taylor Rule, Target 2%, coefficients 0.5"
 la var taylor_93_5 "Policy rate of 1993 Taylor Rule, Target 5%, coefficients 0.5"
 
+***************************
+**GET DATA FOR MONEY GROWTH
+***************************
+preserve
+qui tempfile tmp
+
+qui wbopendata, language(en - English) indicator(FM.LBL.MQMY.CN)long ///
+projection nometadata clear
+drop countryname region regionname adminregion adminregionname incomelevel incomelevelname lendingtype lendingtypename
+ren year Year
+ren countrycode CC
+keep if CC=="JPN" | CC=="CHL" 
+drop if Year<1984 | Year>2016
+
+ren fm_lbl_mqmy_cn M2
+
+if CC=="CHL": la var M2 "Money And Quasi Money (M2) (Current CLP)"
+if CC=="JPN": la var M2 "Money And Quasi Money (M2) (Current JPY)"
+sort countrycode
+*save "${apidata}/M2.dta", replace
+save `tmp', replace
+
+restore
+qui merge countrycode using `tmp'
+
+
 save "${data}/`: var label fr_id '_FINAL.dta", replace
 
 	}
