@@ -15,7 +15,7 @@ global apidata "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/data/api_data"
 
 ***SET DATASOURCE
 global datasource "Data Retrieved 27/02/21 from World Bank DataBank"
-global datasource2 "Data Retrieved 14/03/21 from World Bank Databank and 24/03/21 from Bank for International Settlements"
+global datasource2 "Data Retrieved 24/03/21 from World Bank Databank; Bank for International Settlements"
 
 ***SET GRAPH SCHEME
 global grs "color(white) color(black) plotregion(fcolor(white)) graphregion(fcolor(white)) bgcolor(white)"
