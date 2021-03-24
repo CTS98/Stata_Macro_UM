@@ -286,6 +286,27 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	gr export "Mega Graph 2.png", replace 
 	gr close
 	
+
+****************
+*MONEBASE/IR/FX policy_rate v271_pc v272 v278 v291
+****************
+	
+
+	qui sum Year
+	local grtitle = "Rates, Broad Money, and FX"
+	tw tsline v271_pc v272 v278 v291 ,  ///
+	lpattern(longdash solid dash solid) ///
+	lcolor(`: var label color_5')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
+	ytitle("%", orientation(horizontal)) ///
+	title(`grtitle', color(black) span) ///
+	name(trendcomps, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(cols(2) ) ///
+	xline(`RY' , lcolor(gs10%85)) ///
+	yline(0, lcolor(gs10%85))
+
 	gr drop _all
 	
 

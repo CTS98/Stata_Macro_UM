@@ -47,7 +47,7 @@ run "${do}/data_prep.do"
 foreach frame in "frame JAPAN" "frame CHILE"  {
 	
 	`frame' {
-
+	
 	cd "${output}/`: var label fr_id '/ch4/"
 	
 	if CC=="CHL" {
@@ -115,7 +115,9 @@ la var taylor_93_1 "Policy rate of 1993 Taylor Rule, Target 1%, coefficients 0.5
 la var taylor_93_2 "Policy rate of 1993 Taylor Rule, Target 2%, coefficients 0.5"
 la var taylor_93_5 "Policy rate of 1993 Taylor Rule, Target 5%, coefficients 0.5"
 
-
+gen v271_pc = (100*D.v271/L.v271)
+la var v271_pc "% Change in Broad money to total reserves ratio"
+order v271_pc, after(v64)
 
 save "${data}/`: var label fr_id '_FINAL.dta", replace
 
