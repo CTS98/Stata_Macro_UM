@@ -25,10 +25,12 @@ frame copy default chile
 frame copy default japan
 frame chile{
 	collapse (mean) policy_rate=CBRateCHL, by(Year)
+	sort Year
 	save "${apidata}/CHL_rates.dta", replace
 	}
 frame japan{
 	collapse (mean) policy_rate=CBRateJPN, by(Year)
+	sort Year
 	save "${apidata}/JPN_rates.dta", replace
 }
 
@@ -39,7 +41,6 @@ clear
 **LOAD DATA INCL FRAMES
 run "${do}/data_prep.do"
 
-
 **************************
 *SET UP HP TRENDS
 **************************
@@ -47,17 +48,19 @@ run "${do}/data_prep.do"
 foreach frame in "frame JAPAN" "frame CHILE"  {
 	
 	`frame' {
-	
+		
 	cd "${output}/`: var label fr_id '/ch4/"
 	
 	if CC=="CHL" {
 		replace v416 = (13.91-8.71)/2 if Year==1985
 		replace v416 = (8.71-6.23)/2 if Year==1987
 	} 
-****MERGE IN POLICY RATE DATA
-merge Year using "${apidata}/`: var label fr_id '_rates.dta"
+	
 
-la var policy_rate "Policy rate"
+****MERGE IN POLICY RATE DATA
+merge m:1 Year using "${apidata}/`: var label fr_id '_rates.dta", nogen sorted
+sort Year
+la var policy_rate "Policy rate" 
 ****GENERATE HP TRENDS
 tsfilter hp interest_cyc = policy_rate , trend(interest_trend)
 
@@ -123,6 +126,7 @@ save "${data}/`: var label fr_id '_FINAL.dta", replace
 
 	}
 	}
+	
 save "${data}/Final.dta", replace
 
 

@@ -218,7 +218,7 @@ replace RYString = "" if RYString=="."
 gen double v367opp = 100-v367
 order v367opp, after (v367)
 la var v367opp "Labor force participation rate for ages 25+, total (%)"
-
+sort Year
 la da "World Bank Economic Indicators, Japan, 1984-2016"
 save "${data}/JPN_prepared.dta", replace
 }
@@ -293,7 +293,7 @@ gen double v367opp = 100-v367
 order v367opp, after (v367)
 la var v367opp "Labor force participation rate for ages 25+, total (%)"
 
-
+sort Year
 la da "World Bank Economic Indicators, Chile, 1979-2011"
 save "${data}/CHL_prepared.dta", replace
 }

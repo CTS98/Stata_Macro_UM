@@ -292,6 +292,7 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 ****************
 	
 
+	qui levelsof RecYear, local(RY)
 	qui sum Year
 	local grtitle = "Rates, Broad Money, and FX"
 	tw tsline v271_pc v272 v278 v291 ,  ///
