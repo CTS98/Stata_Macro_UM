@@ -200,10 +200,12 @@ global t93min = `r(min)'
 restore
 }
 if CC=="CHL" {
-	global t93min = 0
+	global t93min = 1998
 }
 eststo : reg policy_rate infl_dev gdp_dev, r beta
-eststo : reg policy_rate infl_dev gdp_dev if Year>=${t93min}, r beta
+if CC=="JPN" {
+	eststo : reg policy_rate infl_dev gdp_dev if Year>=${t93min}, r beta
+} 
 eststo : reg policy_rate infl_dev unemp_dev , r beta
 eststo : reg policy_rate infl_dev unemp_dev if Year>=${trmin}, r beta
 
@@ -238,7 +240,7 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	qui sum Year if taylor_93_0!=.
 	local grtitle = "Estimated Taylor Rule"
 	tw (tsline taylor_est_2  taylor_est_0 taylor_est_1 policy_rate ///
-	if taylor_93_0!=.,  ///
+	if taylor_93_0!=., nodraw ///
 	lcolor(`: var label color_2' gs12%85 purple%90)  ${grs} ///
 	lpattern(solid solid dash longdash) ///
 	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
@@ -288,26 +290,72 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	
 
 ****************
-*MONEBASE/IR/FX policy_rate v271_pc v272 v278 v291
+*MONEYBASE/IR/FX policy_rate v271_pc v272 v278 v291
 ****************
+
 	
 
 	qui levelsof RecYear, local(RY)
 	qui sum Year
-	local grtitle = "Rates, Broad Money, and FX"
-	tw tsline v271_pc v272 v278 v291 ,  ///
+	local grtitle = "Broad Money"
+	tw tsline  v272 v271_pc , nodraw ///
 	lpattern(longdash solid dash solid) ///
-	lcolor(`: var label color_5')  ${grs} ///
+	lcolor(`: var label color_2' `: var label color_scat')  ${grs} ///
 	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
 	ytitle("%", orientation(horizontal)) ///
-	title(`grtitle', color(black) span) ///
-	name(trendcomps, replace) ///
+	title("`grtitle'", color(black) span) ///
+	name(broadmoney, replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
 	graphregion(margin(tiny)) ///
 	legend(cols(2) ) ///
 	xline(`RY' , lcolor(gs10%85)) ///
 	yline(0, lcolor(gs10%85))
-
+	
+	qui levelsof RecYear, local(RY)
+	qui sum Year
+	local grtitle = "Interest Rates"
+	tw tsline policy_rate v278 v277, nodraw ///
+	lpattern(longdash solid dash solid) ///
+	lcolor(`: var label color_2' `: var label color_scat')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
+	ytitle("%", orientation(horizontal)) ///
+	title("`grtitle'", color(black) span) ///
+	name(rates, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(cols(3) ) ///
+	xline(`RY' , lcolor(gs10%85)) ///
+	yline(0, lcolor(gs10%85))
+	
+	qui levelsof RecYear, local(RY)
+	qui sum Year
+	local grtitle = "FX"
+	tw tsline  v291_pc v17 v13 , nodraw ///
+	lpattern(longdash solid dash solid) ///
+	lcolor(`: var label color_2' `: var label color_scat')  ${grs} ///
+	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
+	ytitle("%", orientation(horizontal)) ///
+	title("`grtitle'", color(black) span) ///
+	name(fx, replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(cols(3) ) ///
+	xline(`RY' , lcolor(gs10%85)) ///
+	yline(0, lcolor(gs10%85))
+	
+	********
+	*COMBINE
+	********
+	
+	gr combine broadmoney rates fx, ///
+	rows(3) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
+	caption(, nobox)  name(moneyratesfx, replace) ///
+	xsize(7) scale(0.8)  xcommon ///
+	graphregion(margin(zero) fcolor(white) ///
+	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
+	ilpattern(blank))  ///
+	note("vertical lines mark recession years, ${datasource2}")
+	
 	gr drop _all
 	
 
