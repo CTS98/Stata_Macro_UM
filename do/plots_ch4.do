@@ -1,6 +1,7 @@
 clear all
 qui include "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/do/paths.do"
 **LOAD DATA INCL FRAMES
+run "${do}/setup_ch4.do"
 
 
 **************************
@@ -15,6 +16,7 @@ In the first part (which is the relatively longer of the two), you will study th
 */
 
 graph set window fontface default
+frame change JAPAN
 
 foreach frame in "frame JAPAN" "frame CHILE" {
 	
@@ -32,20 +34,24 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	qui sum Year
 	local grtitle = "Filtered trends"
 	tw tsline interest_trend unemp_trend gdp_trend infl_trend, nodraw ///
+	lpattern(longdash solid dash solid) ///
 	lcolor(`: var label color_5')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ytitle("%", orientation(horizontal)) ///
+	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
+	ytitle("%", orientation(horizontal)) ///
 	title(`grtitle', color(black) span) ///
 	name(trendcomps, replace) ///
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
 	graphregion(margin(tiny)) ///
 	legend(cols(4) ) ///
-	xline(`RY' , lcolor(gs10%85)) 
+	xline(`RY' , lcolor(gs10%85)) ///
+	yline(0, lcolor(gs10%85))
 	 
 	
 	qui levelsof RecYear, local(RY)
 	qui sum Year
-	local grtitle = "Cyclical components of trends"
+	local grtitle = "Cyclical Components / Deviations from trends"
 	tw tsline interest_cyc unemp_cyc gdp_cyc infl_cyc , nodraw ///
+	lpattern(longdash solid dash solid) ///
 	lcolor(`: var label color_5')  ${grs} ///
 	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
 	ytitle("%", orientation(horizontal)) ///
@@ -57,34 +63,21 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	xline(`RY' , lcolor(gs10%85)) ///
 	yline(0, lcolor(gs10%85)) 
 	
-	qui levelsof RecYear, local(RY)
-	qui sum Year
-	local grtitle = "Deviations from trends"
-	tw tsline interest_dev unemp_dev gdp_dev infl_dev , nodraw ///
-	lcolor(`: var label color_5')  ${grs} ///
-	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
-	ytitle("%", orientation(horizontal)) ///
-	title(`grtitle', color(black) span) ///
-	name(trenddevs, replace) ///
-	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
-	graphregion(margin(tiny)) ///
-	legend(cols(4) ) ///
-	xline(`RY' , lcolor(gs10%85)) ///
-	yline(0, lcolor(gs10%85)) 
 	
-	gr combine trendcomps cyccomps trenddevs , ///
-	rows(3) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
-	caption(, nobox) note($datasource, nobox) name(trendpanels, replace) ///
+	gr combine trendcomps cyccomps  , ///
+	rows(2) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
+	caption(, nobox) note($datasource, nobox) ///
+	name(trendpanels, replace) ///
 	xsize(7) scale(0.8) xcommon ///
 	graphregion(margin(zero) fcolor(white) ///
 	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
 	ilpattern(blank))  ///
 	note("vertical lines mark recession years" "${datasource}")
 	
-	gr export "HP Trends triple panel.png", replace
+	gr export "HP Trends double panel.png", replace
 	gr close
 	
-	gr combine trendcomps  trenddevs , ///
+	gr combine trendcomps  cyccomps , ///
 	rows(3) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
 	caption(, nobox) note(, nobox) name(trendpanelsslim, replace) ///
 	xsize(7) scale(0.8) xcommon ///
@@ -97,7 +90,8 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	qui levelsof RecYear, local(RY)
 	qui sum Year if taylor_93_0!=.
 	local grtitle = "Taylor 1993"
-	tw (tsline taylor_93_0  taylor_93_2 taylor_93_1 v276 if taylor_93_0!=., nodraw ///
+	tw (tsline taylor_93_0  taylor_93_2 taylor_93_1 policy_rate ///
+	if taylor_93_0!=., nodraw ///
 	lcolor(`: var label color_2' gs10%80 purple%90)  ${grs} ///
 	lpattern(solid solid dash longdash) ///
 	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
@@ -108,7 +102,7 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
 	graphregion(margin(tiny)) ///
 	legend(rows(5) order (3 2 1 4 5) label(5 "Policy Rate Corridor") ///
-	label(4 "Actual Nominal Lending Rate")) ///
+	label(4 "Actual Policy Rate")) ///
 	xline(`RY' , lcolor(gs10%85)) ) ///
 	(rarea taylor_93_0 taylor_93_2 Year if taylor_93_0!=., sort ///
 	color(gs10%80) fcolor(gs11%60) )
@@ -119,7 +113,7 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	qui sum Year if taylor_93_0!=.
 	local grtitle = "Taylor 1993"
 	tw (tsline taylor_93_0  taylor_93_5 taylor_93_2  ///
-	v276 if taylor_93_0!=., nodraw ///
+	policy_rate if taylor_93_0!=., nodraw ///
 	lcolor(`: var label color_2' gs10%80 purple%90)  ${grs} ///
 	lpattern(solid solid dash dash longdash) ///
 	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
@@ -130,7 +124,7 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
 	graphregion(margin(tiny)) ///
 	legend(rows(5) order (4 2 3 1 5) label(5 "Policy Rate Corridor") ///
-	label(4 "Actual Nominal Lending Rate")) ///
+	label(4 "Actual Policy Rate")) ///
 	xline(`RY' , lcolor(gs10%85)) ) ///
 	(rarea taylor_93_0 taylor_93_5 Year if taylor_93_0!=., sort ///
 	color(gs10%80) fcolor(gs11%60) )
@@ -142,9 +136,9 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	qui levelsof RecYear, local(RY)
 	qui sum Year if taylor_93_0!=.
 	local grtitle = "Money Supply"
-	tw tsline v272 v288 if v288!=. , nodraw  ///
-	lcolor(`: var label color_2' gs10%80 purple%90)  ${grs} ///
-	lpattern(solid dash) ///
+	tw tsline v272 v288 policy_rate if v288!=. , nodraw  ///
+	lcolor(`: var label color_2'  purple%90)  ${grs} ///
+	lpattern(solid dash longdash) ///
 	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
 	ytitle("%", orientation(horizontal)) ///
 	title(`grtitle', color(black) span) ///
@@ -165,7 +159,7 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	graphregion(margin(zero) fcolor(white) ///
 	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
 	ilpattern(blank))  ///
-	note("vertical lines mark recession years" "${datasource}")
+	note("vertical lines mark recession years" "${datasource2}")
 	
 	gr export "Money and Inflation Targeting.png", replace
 	gr close
@@ -179,17 +173,120 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
 	ilpattern(blank))  ///
 	note("vertical lines mark recession years; functional form of Taylor Rule adopted from Taylor (1993)" ///
-	"Trends are estimated using a Hodrick-Prescott Filter (cf. Wooldridge, 2020)" "${datasource}")
+	"Trends are estimated using a Hodrick-Prescott Filter (cf. Wooldridge, 2020)" "${datasource2}")
 	
 	gr export "Mega Graph.png", replace
 	gr close
 	
-gr drop _all
+*****************************
+**TR WITH ESTIMATED >0 COEFFS
+*****************************
+	
+preserve
+rolling _b, window(6): reg policy_rate infl_dev unemp_dev, r beta
+keep if _b_infl_dev>0 & _b_unemp_dev>0 & _b_infl_dev!=.
+list
+qui sum start
+global trmin = `r(min)'
+
+restore
+
+if CC=="JPN" {
+preserve
+rolling _b, window(6): reg policy_rate gdp_dev infl_dev, r beta
+keep if _b_infl_dev>0 & _b_gdp_dev>0 & _b_infl_dev!=.
+list
+qui sum start
+global t93min = `r(min)'
+
+restore
+}
+if CC=="CHL" {
+	global t93min = 0
+}
+eststo : reg policy_rate infl_dev gdp_dev, r beta
+eststo : reg policy_rate infl_dev gdp_dev if Year>=${t93min}, r beta
+eststo : reg policy_rate infl_dev unemp_dev , r beta
+eststo : reg policy_rate infl_dev unemp_dev if Year>=${trmin}, r beta
+
+esttab using "Regressions.html", replace ///
+star  label wide lines ar2 obslast mtitles("Taylor 93, Naive" ///
+"Taylor 93, Rolling" ///
+"Taylor Rule, Naive" ///
+"Taylor Rule, Rolling" span) ///
+title("Estimated Coefficients of the Taylor Rule") ///
+addnotes("Naive refers to Regressions over the entire period" ///
+"Rolling refers to a two-stage estimation process that estimates coefficients over rolling 5-year intervals and keeps only years with positive coefficients" ///
+"Heteroskedasticity-robust std. errors used across all models" ///
+"Standardized beta coefficients reported to facilitate cross-model comparisons")
+
+eststo clear
+
+gen taylor_est_2 = 2+ _b[_cons] + _b[infl_dev]*infl_dev + ///
+_b[unemp_dev]*(v288-2) //TARGET=2%
+gen taylor_est_0 = _b[_cons] + _b[infl_dev]*infl_dev + ///
+_b[unemp_dev]*(v288-0) //TARGET=0%
+la var taylor_est_2 "Policy rate according to the estimated Taylor Rule, Target 2% "
+la var taylor_est_0 "Policy rate according to the estimated Taylor Rule, Target 0% "
+
+	local beta1hat : di %3.2f _b[infl_dev]
+	local beta2hat : di %3.2f _b[unemp_dev]
+	
+	qui levelsof RecYear, local(RY)
+	qui sum Year if taylor_93_0!=.
+	local grtitle = "Estimated Taylor Rule"
+	tw (tsline taylor_est_2  taylor_est_0 policy_rate ///
+	if taylor_93_0!=., nodraw ///
+	lcolor(`: var label color_2'  purple%90)  ${grs} ///
+	lpattern(solid solid dash longdash) ///
+	ylabel(#5, nogrid angle(0) format(%4.1fc)) xtitle("") ///
+	ytitle("%", orientation(horizontal)) ///
+	title(`grtitle', color(black) span) ///
+	name(taylor_area, replace) ///
+	saving("Taylorarea.gph", replace) ///
+	tlabel(`r(min)'(5)`r(max)', angle(0) nogex )  ///
+	graphregion(margin(tiny)) ///
+	legend(rows(5) order (3 2 1 4 ) label(4 "Policy Rate Corridor")) ///
+	xline(`RY' , lcolor(gs10%85)) yline(0, lcolor(gs10%85)) ///
+	note("Estimated Taylor Rule Coefficients are `beta1hat' for inflation, `beta2hat' for unemployment", span size(*1.5))) ///
+	(rarea taylor_est_0 taylor_est_2 Year if taylor_est_0!=., sort ///
+	color(gs10%80) fcolor(gs11%60) ) ///
+	
+
+*********************
+*COMBINE TAYLOR RULES
+*********************
+
+
+	gr combine "T93area.gph" taylor_area, ///
+	cols(2) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
+	caption(, nobox) note($datasource, nobox) name(taylorcomp, replace) ///
+	xsize(7) scale(0.8)  ///
+	graphregion(margin(zero) fcolor(white) ///
+	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
+	ilpattern(blank))  ///
+	note("vertical lines mark recession years, ${datasource2}")
+	
+	gr export "Taylor Comp.png", replace
+	gr close
+
+
+	gr combine trendpanelsslim  taylorcomp, ///
+	rows(2) title(, color(black) nobox fcolor() ) subtitle(, nobox) ///
+	caption(, nobox)  name(taylorcomp, replace) ///
+	xsize(7) scale(0.8)  ///
+	graphregion(margin(zero) fcolor(white) ///
+	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
+	ilpattern(blank)) note("Trends are estimated using a Hodrick-Prescott Filter (cf. Wooldridge, 2020)")
+	
+	gr export "Mega Graph 2.png", replace 
+	gr close
+	
+	gr drop _all
 	
 
 	
 	
 	}
 }
-
 

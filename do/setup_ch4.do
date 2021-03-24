@@ -58,7 +58,7 @@ merge Year using "${apidata}/`: var label fr_id '_rates.dta"
 
 la var policy_rate "Policy rate, monthly mean"
 ****GENERATE HP TRENDS
-tsfilter hp interest_cyc = v276 , trend(interest_trend)
+tsfilter hp interest_cyc = policy_rate , trend(interest_trend)
 
 tsfilter hp gdp_cyc = v198 , trend(gdp_trend)
 
@@ -67,7 +67,7 @@ tsfilter hp unemp_cyc = v416 , trend (unemp_trend)
 tsfilter hp infl_cyc = v288 , trend(infl_trend)
 
 ****GEN DEVIATIONS FROM HP TRENDS
-gen interest_dev = v276-interest_trend
+gen interest_dev = policy_rate-interest_trend
 
 gen gdp_dev = v198-gdp_trend
 
@@ -85,20 +85,20 @@ gen infl_dev = v288-infl_trend
 **LABEL AND ORDER
 order interest* gdp* unemp* NAIR*, last
 
-la var interest_cyc "Cyclical component of the interest rate"
-la var interest_trend "Trend in lending rate (HP)"
+la var interest_cyc "Cyclical component of the policy rate"
+la var interest_trend "Trend in policy rate (HP)"
 la var unemp_trend "Trend in unemployment rate (HP)"
 la var gdp_trend "Trend in GDP (HP)"
 la var gdp_cyc "Cyclical component of GDP"
 la var unemp_cyc "Cyclical component of unemployment"
 la var NAIRU "Mean Unemployment Rate across period"
 la var NAIRU_trend "Mean Unemployment Rate less cyclical"
-la var interest_dev "Deviation from trend in interest rate"
+la var interest_dev "Deviation from trend in policy rate"
 la var gdp_dev "Deviation from trend in GDP"
 la var unemp_dev "Deviation from trend in unemployment"
 
 la var infl_cyc "Cyclical component of inflation"
-la var infl_trend "Trend in inflation"
+la var infl_trend "Trend in inflation (HP)"
 la var infl_dev "Deviation from trend in inflation"
 ****************************
 *CREATE TAYLOR RULES VARS
