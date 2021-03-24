@@ -374,7 +374,7 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 	graphregion(margin(zero) fcolor(white) ///
 	lcolor(white%0) lpattern(blank) ifcolor(white) ilcolor(white%0) ///
 	ilpattern(blank))  ///
-	note("vertical lines mark recession years "${datasource2}")
+	note("vertical lines mark recession years " "${datasource2}")
 	
 	gr export "money rates fx.png", replace
 	gr close
