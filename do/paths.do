@@ -6,7 +6,7 @@ set more off
 cd "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata"
 
 *****SET PATHS
-global do "/Users/ts/Git/Stata_Macro_UM/do/paths.do"
+global do "/Users/ts/Git/Stata_Macro_UM/do/"
 global data "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/data"
 global output "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata/output"
 
