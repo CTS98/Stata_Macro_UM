@@ -19,25 +19,16 @@ format month %tm
 gen Year = year(day)
 format Year %ty
 sort Year
+la drop _all
 drop if Year<1980 | Year>2016
 frame copy default chile
 frame copy default japan
 frame chile{
-	keep if month==6 
-	sort Year
-	tsset Year
-	ren CBRateCHL policy_rate
-	keep policy_rate Year
-	la drop _all
+	collapse (mean) policy_rate=CBRateCHL, by(Year)
 	save "${apidata}/CHL_rates.dta", replace
-}
+	}
 frame japan{
-	keep if month==6
-	sort Year
-	tsset Year
-	ren CBRateJPN policy_rate
-	keep policy_rate Year
-	la drop _all
+	collapse (mean) policy_rate=CBRateJPN, by(Year)
 	save "${apidata}/JPN_rates.dta", replace
 }
 
