@@ -18,7 +18,7 @@ gen month = month(day)
 format month %tm
 gen Year = year(day)
 format Year %ty
-
+sort Year
 drop if Year<1980 | Year>2016
 frame copy default chile
 frame copy default japan
