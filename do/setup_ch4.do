@@ -10,27 +10,38 @@ ren Backtomenu date
 encode CentralbankpolicyratesChi, gen(CBRateCHL)
 encode CentralbankpolicyratesJap, gen(CBRateJPN)
 drop Centralbank*
+replace CBRateJPN =0 if CBRateJPN==.
 
 gen day = date(date, "DMY")
 format day %td
-gen month = mofd(day)
+gen month = month(day)
 format month %tm
-gen Year = yofd(day)
+gen Year = year(day)
 format Year %ty
 
 drop if Year<1980 | Year>2016
 frame copy default chile
 frame copy default japan
 frame chile{
-	collapse (mean) CBRateCHL , by(Year) cw
+	keep if month==6 
+	sort Year
+	tsset Year
 	ren CBRateCHL policy_rate
+	keep policy_rate Year
+	tsfill
 	save "${apidata}/CHL_rates.dta", replace
 }
 frame japan{
-	collapse (mean) CBRateJPN , by(Year) cw
+	set dp period
+	keep if month==6
+	sort Year
+	tsset Year
 	ren CBRateJPN policy_rate
+	keep policy_rate Year
+	tsfill
 	save "${apidata}/JPN_rates.dta", replace
 }
+
 clear
 ****************************************************
 ****************************************************
@@ -42,8 +53,8 @@ run "${do}/data_prep.do"
 **************************
 *SET UP HP TRENDS
 **************************
-
-foreach frame in "frame JAPAN" "frame CHILE" {
+*
+foreach frame in "frame JAPAN" "frame CHILE"  {
 	
 	`frame' {
 
@@ -56,7 +67,7 @@ foreach frame in "frame JAPAN" "frame CHILE" {
 ****MERGE IN POLICY RATE DATA
 merge Year using "${apidata}/`: var label fr_id '_rates.dta"
 
-la var policy_rate "Policy rate, monthly mean"
+la var policy_rate "Policy rate"
 ****GENERATE HP TRENDS
 tsfilter hp interest_cyc = policy_rate , trend(interest_trend)
 
