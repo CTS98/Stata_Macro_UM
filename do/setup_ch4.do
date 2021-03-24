@@ -122,7 +122,7 @@ gen v271_pc = (100*D.v271/L.v271)
 la var v271_pc "% Change in Broad money to total reserves ratio"
 order v271_pc, after(v64)
 
-save "${data}/`: var label fr_id '_FINAL.dta", replace
+save "${data}/`: var label fr_id '_prefinal.dta", replace
 
 	}
 	}

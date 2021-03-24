@@ -385,6 +385,7 @@ la var taylor_est_1 "Policy rate according to the estimated Taylor Rule, Target 
 erase T93area.gph
 erase Taylorarea.gph
 	
+	save "${data}/`: var label fr_id '_FINAL.dta", replace
 	}
 
 
