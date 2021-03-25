@@ -104,7 +104,8 @@ foreach frame in  "JAPAN" "CHILE" {
 	label(4 "Actual Policy Rate")) ///
 	xline(`RY' , lcolor(gs10%85)) ) ///
 	(rarea taylor_93_0 taylor_93_2 Year if taylor_93_0!=., sort ///
-	color(gs10%80) fcolor(gs11%60) )
+	color(gs10%80) fcolor(gs11%60) ) ///
+	yline(0, lcolor(gs10%85)) 
 	
 	gr save "T93area.gph", replace
 if CC=="CHL" {
@@ -126,7 +127,8 @@ if CC=="CHL" {
 	label(4 "Actual Policy Rate")) ///
 	xline(`RY' , lcolor(gs10%85)) ) ///
 	(rarea taylor_93_0 taylor_93_5 Year if taylor_93_0!=., sort ///
-	color(gs10%80) fcolor(gs11%60) )
+	color(gs10%80) fcolor(gs11%60) ) ///
+	yline(0, lcolor(gs10%85)) 
 	
 	gr save "T93area.gph", replace
 }
