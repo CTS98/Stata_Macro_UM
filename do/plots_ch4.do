@@ -102,10 +102,10 @@ foreach frame in  "JAPAN" "CHILE" {
 	graphregion(margin(tiny)) ///
 	legend(rows(5) order (3 2 1 4 5) label(5 "Policy Rate Corridor") ///
 	label(4 "Actual Policy Rate")) ///
-	xline(`RY' , lcolor(gs10%85)) ) ///
+	xline(`RY' , lcolor(gs10%85)) 	yline(0, lcolor(gs10%85))  ) ///
 	(rarea taylor_93_0 taylor_93_2 Year if taylor_93_0!=., sort ///
-	color(gs10%80) fcolor(gs11%60) ) ///
-	yline(0, lcolor(gs10%85)) 
+	color(gs10%80) fcolor(gs11%60) )
+
 	
 	gr save "T93area.gph", replace
 if CC=="CHL" {
@@ -125,10 +125,10 @@ if CC=="CHL" {
 	graphregion(margin(tiny)) ///
 	legend(rows(5) order (4 2 3 1 5) label(5 "Policy Rate Corridor") ///
 	label(4 "Actual Policy Rate")) ///
-	xline(`RY' , lcolor(gs10%85)) ) ///
+	xline(`RY' , lcolor(gs10%85)) yline(0, lcolor(gs10%85))  ) ///
 	(rarea taylor_93_0 taylor_93_5 Year if taylor_93_0!=., sort ///
-	color(gs10%80) fcolor(gs11%60) ) ///
-	yline(0, lcolor(gs10%85)) 
+	color(gs10%80) fcolor(gs11%60) ) 
+	
 	
 	gr save "T93area.gph", replace
 }
