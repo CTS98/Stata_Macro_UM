@@ -244,12 +244,12 @@ eststo clear
 qui reg policy_rate infl_dev unemp_dev if Year>=`trmin', r beta
 
 
-gen taylor_est_2 = 2+ _b[_cons] + _b[infl_dev]*infl_dev + ///
-_b[unemp_dev]*(v288-2) //TARGET=2%
-gen taylor_est_0 = _b[_cons] + _b[infl_dev]*infl_dev + ///
-_b[unemp_dev]*(v288-0) //TARGET=0%
-gen taylor_est_1 = _b[_cons] + _b[infl_dev]*infl_dev + ///
-_b[unemp_dev]*(v288-1) +1 //TARGET=1%
+gen taylor_est_2 = 2+ _b[_cons] + _b[infl_dev]*infl_dev - ///
+_b[unemp_dev]*unemp_dev //TARGET=2%
+gen taylor_est_0 = _b[_cons] + _b[infl_dev]*infl_dev - ///
+_b[unemp_dev]*unemp_dev //TARGET=0%
+gen taylor_est_1 = _b[_cons] + _b[infl_dev]*infl_dev - ///
+_b[unemp_dev]*unemp_dev +1 //TARGET=1%
 
 la var taylor_est_2 "Policy rate according to the estimated Taylor Rule, Target 2% "
 la var taylor_est_0 "Policy rate according to the estimated Taylor Rule, Target 0% "
