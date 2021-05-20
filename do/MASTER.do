@@ -8,7 +8,7 @@ cd "/Users/ts/OneDrive/Uni/UM OD/Year 1/Macro/stata"
 
 ***INCLUDE PATHS AND GLOBALS
 include "/Users/ts/Git/Stata_Macro_UM/do/paths.do"
-*SETUP: COMMENT IN AND RUN TO SSC INSTALL PACKAGES REQUIRED
+*SETUP: COMMENT IN AND RUN TO SSC INSTALL REQUIRED PACKAGES 
 *run "${do}/setup.do"
 
 **GET DATA FROM WORLD BANK API
